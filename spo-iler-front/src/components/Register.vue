@@ -2,25 +2,37 @@
   <div class="col-md-12">
     <div class="card card-container">
       <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
+        id="logo-img"
+        src="../assets/spo-iler_logo.png"
+        class="logo-img-card"
       />
+      <span class="info-text-main">
+        Create a Spo-iler account
+      </span>
+      <p class="info-text-sub">
+        Sign up easily to access all Spo-iler services! All fields are required.
+      </p>
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
+            <div class="input">
+              <img class="icon" src="../assets/person-icon.png" alt="">
+              <Field name="username" type="text" class="form-control" placeholder="Username" />
+            </div>
             <ErrorMessage name="username" class="error-feedback" />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
-            <Field name="email" type="email" class="form-control" />
+            <div class="input">
+              <img class="icon" src="../assets/mail-icon.png" alt="">
+              <Field name="email" type="email" class="form-control" placeholder="e-mail address" />
+            </div>
             <ErrorMessage name="email" class="error-feedback" />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
+            <div class="input">
+              <img class="icon" src="../assets/lock-icon.png" alt="">
+              <Field name="password" type="password" class="form-control" placeholder="Password" />
+            </div>
             <ErrorMessage name="password" class="error-feedback" />
           </div>
 
@@ -146,7 +158,7 @@ label {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
-.profile-img-card {
+.logo-img-card {
   width: 96px;
   height: 96px;
   margin: 0 auto 10px;
@@ -158,5 +170,25 @@ label {
 
 .error-feedback {
   color: red;
+}
+
+.info-text-main {
+  text-align: center;
+  font-size: larger;
+  font-weight: 700;
+}
+
+.info-text-sub {
+  text-align: center;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.input {
+  display: flex;
+  align-items: center;
 }
 </style>

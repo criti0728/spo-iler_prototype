@@ -100,24 +100,19 @@ public class AuthController {
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
-        switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
-
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
-        }
+    	  switch (role) {
+          case "admin":
+              Role adminRole = ensureRoleExists(ERole.ROLE_ADMIN);
+              roles.add(adminRole);
+              break;
+          case "mod":
+              Role modRole = ensureRoleExists(ERole.ROLE_MODERATOR);
+              roles.add(modRole);
+              break;
+          default:
+              Role userRole = ensureRoleExists(ERole.ROLE_USER);
+              roles.add(userRole);
+      }
       });
     }
 
@@ -126,4 +121,13 @@ public class AuthController {
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+  private Role ensureRoleExists(ERole roleName) {
+	    return roleRepository.findByName(roleName).orElseGet(() -> {
+	        Role newRole = new Role();
+	        newRole.setName(roleName);
+	        roleRepository.save(newRole);
+	        return newRole;
+	    });
+}
+
 }

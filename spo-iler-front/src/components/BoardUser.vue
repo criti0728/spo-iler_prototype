@@ -139,7 +139,7 @@ export default {
           // 감정을 배열로 변환하고 내림차순으로 정렬
           const sortedEmotions = Object.entries(expressions)
             .sort(([, valueA], [, valueB]) => valueB - valueA) // 확률값 기준 정렬
-            .slice(0, 3); // 상위 3개 추출
+            .slice(0, 4); // 상위 3개 추출
 
           // 상위 3개의 감정을 문자열로 변환
           this.emotion = sortedEmotions

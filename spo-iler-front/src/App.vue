@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">대충 개쩌는 로고와 이름</a>
+    <nav class="navbar navbar-expand navbar-lgiht bg-light">
+      <a href="/" class="navbar-brand">
+        <img class="logo" src="./assets/spo-iler_logo.png" alt="">
+        <span>Spo-iler</span>
+      </a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
@@ -82,3 +85,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.logo {
+  height: 3rem;
+}
+</style>
