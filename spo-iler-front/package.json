@@ -13,6 +13,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.0-3",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "browser-image-compression": "^2.0.2",
     "core-js": "^3.6.5",
     "face-api.js": "^0.22.2",
     "jquery": "^3.6.0",

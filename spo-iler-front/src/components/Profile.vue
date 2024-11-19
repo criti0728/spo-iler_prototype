@@ -21,11 +21,23 @@
     <ul>
       <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
     </ul>
+    <ActivityLogs :logs="logs" />
   </div>
 </template>
 
 <script>
+import { getFromLocalStorage } from "../utils/storage";
+import ActivityLogs from "../components/ActivityLogs.vue";
+
 export default {
+  components: {
+    ActivityLogs,
+  },
+  data() {
+    return {
+      logs: [],
+    };
+  },
   name: 'Profile',
   computed: {
     currentUser() {
@@ -36,6 +48,7 @@ export default {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
+    this.logs = getFromLocalStorage("userLogs");
   }
 };
 </script>

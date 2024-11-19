@@ -26,17 +26,17 @@
       <input type="number" v-model="score" id="score" /> : <input type="number" v-model="opponentScore" id="opponentScore" />
     </div>
 
-    <!-- 사진 업로드 섹션 -->
-    <div>
+    <!-- 사진 업로드 섹션 ->로컬스토리지 관련으로 문제 생길 시 복구하기
+    <div>            
       <h4>Upload a photo to detect emotions:</h4>
       <input type="file" @change="handleImageUpload" accept="image/*" />
-    </div>
+    </div> -->
 
-    <!-- 업로드된 이미지 미리보기 -->
+    <!-- 업로드된 이미지 미리보기 ->로컬스토리지 관련으로 문제 생길 시 복구하기
     <div v-if="imageUrl">
       <h4>Uploaded Image:</h4>
       <img :src="imageUrl" alt="Uploaded Image" style="max-width: 100%; height: auto;" />
-    </div>
+    </div> -->
 
     <!-- 감정 분석 결과 표시 -->
     <div v-if="emotion">
@@ -47,6 +47,14 @@
     <div v-if="winProbability !== null">
       <h4>Estimated Winning Probability: {{ winProbability.toFixed(2) }}%</h4>
     </div>
+    <!--로컬스토리지로 결과값과 이미지 이동-->
+    <div>
+    <input type="file" @change="handleImageUpload" accept="image/*" />
+    <div v-if="imageUrl">
+      <h4>Uploaded Image:</h4>
+      <img :src="imageUrl" alt="Uploaded Image" style="max-width: 100%;" />
+    </div>
+    </div>
 
     <!-- 숨겨진 캔버스 (face-api.js에서 필요) -->
     <canvas ref="canvas" style="display: none;"></canvas>
@@ -56,6 +64,8 @@
 <script>
 import * as faceapi from "face-api.js"; // face-api.js 가져오기
 import UserService from "../services/user.service";
+import { compressImage } from "../utils/imageProcessing";
+import { saveToLocalStorage } from "../utils/storage";
 
 export default {
   name: "User",
@@ -151,15 +161,25 @@ export default {
           this.emotion = "No emotions detected.";
         }
 
-        // 얼굴 영역에 네모 표시
-        const resizedDetections = faceapi.resizeResults(detections, image);  // 감지된 얼굴 크기 조정
-        faceapi.draw.drawDetections(canvas, resizedDetections);  // 얼굴 감지 박스 그리기
       } else {
         this.emotion = "No faces detected.";
       }
 
       // 승률 계산
       this.calculateWinProbability();
+      try {
+        // 이미지 압축
+        const compressedFile = await compressImage(file);
+        this.imageUrl = URL.createObjectURL(compressedFile);
+
+        // 로컬스토리지에 저장
+        saveToLocalStorage("userLogs", {
+          timestamp: new Date().toISOString(),
+          imageUrl: this.imageUrl,
+        });
+      } catch (error) {
+        console.error("Failed to process the image", error);
+      }
     },
 
     // 파일에서 이미지를 로드하는 메서드
