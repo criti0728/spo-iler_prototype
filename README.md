@@ -111,25 +111,39 @@ The key classes in this project and their relationships are as follows:
 
 ---
 
-## 7. Face-Recognition Modeling and API Usage
+## 7. Face Recognition Modeling and Related API Usage
+- The face recognition modeling in this project was built using the **face-api.js** package.
+- Methods provided by the model, such as `matchDimensions` and `TinyFaceDetectorOptions`, were utilized to simplify method calls.
+- For image detection and emotion analysis, a custom-trained model was applied.
+  - The training process was conducted in a development environment equipped with a high-performance GPU.
+  - The trained model was converted into the TensorFlow.js format, separating the weight information into a `shard1` file and the module for communication with Vue and other frameworks into a JSON file.
 
-### Modeling Process
-1. **Image Preprocessing**:
-   - Normalize image resolution and remove noise.
-   - Crop photos to focus on faces using a face-detection library.
+---
 
-2. **Emotion Recognition**:
-   - Use a pre-trained model (e.g., OpenCV or TensorFlow) to classify emotions such as happiness, anger, or sadness.
-   - Assign a probability score to each detected emotion.
+### 7-1. Face Detection Module
+#### Files:
+- **tiny_face_model-shard1**  
+- **tiny_face_detector_model-weights_manifest.json**
 
-3. **Game Flow Analysis**:
-   - Use detected emotions as input for a predictive model.
-   - Evaluate game dynamics and calculate victory probabilities based on aggregated emotions.
+#### Details:
+- Used **TensorFlow.js** to detect human face contours.
+- The `weights_manifest.json` file converts the detected face contours into a JSON format for communication with Vue.
+- Utilized **CNN (Convolutional Neural Networks)** to detect faces, incorporating **Depthwise Separable Convolution** to optimize the model's lightweight nature.
+- The model was trained with various image augmentations, such as brightness adjustment and rotation, to handle diverse lighting conditions and angles.
+- A lightweight structure based on **MobileNet** was adopted to enable real-time analysis.
 
-### API Usage
-- **Face Detection**:
-   - OpenCV or Dlib for efficient face detection.
-- **Emotion Classification**:
-   - TensorFlow-based models for extracting emotion probabilities.
-- **Backend Integration**:
-   - Expose REST APIs for uploading photos and retrieving analysis results.
+---
+
+### 7-2. Facial Expression Recognition Module
+#### Files:
+- **face_expression_model-shard1**  
+- **face_expression_model-weights_manifest.json**
+
+#### Details:
+- Used **TensorFlow.js** to recognize facial expressions of detected faces.
+- The training was conducted with images designed for Korean emotion recognition, available via the following link:  
+  [Korean Emotion Recognition Dataset](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=82)
+- Seven emotion labels were applied:
+  - `neutral`, `sad`, `surprised`, `happy`, `angry`, `disgusted`, `scared`.
+- Enabled GPU acceleration within browsers by leveraging **WebGL**.
+
