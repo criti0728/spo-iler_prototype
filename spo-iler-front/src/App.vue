@@ -43,14 +43,14 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" @click.prevent="logOut">
+          <a id="logout" class="nav-link" @click.prevent="logOut">
             <font-awesome-icon icon="sign-out-alt" /> LogOut
           </a>
         </li>
       </div>
     </nav>
 
-    <div class="container">
+    <div>
       <router-view />
     </div>
   </div>
@@ -81,6 +81,7 @@ export default {
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
+      window.localStorage.removeItem('userLogs');
     }
   }
 };
@@ -89,5 +90,13 @@ export default {
 <style scoped>
 .logo {
   height: 3rem;
+}
+
+#logout {
+  cursor: pointer;
+}
+
+#app {
+  min-width: 1000px;
 }
 </style>
